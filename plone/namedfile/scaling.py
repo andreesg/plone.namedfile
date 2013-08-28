@@ -14,6 +14,8 @@ from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from zope.app.file.file import FileChunk
+from plone.protect.interfaces import IDisableCSRFProtection
+from zope.interface import alsoProvides
 
 _marker = object()
 
@@ -279,8 +281,9 @@ class ImageScaling(BrowserView):
             if not scale in available:
                 return None
             width, height = available[scale]
-        storage = AnnotationStorage(self.context, self.modified)
 
+        alsoProvides(self.request, IDisableCSRFProtection)
+        storage = AnnotationStorage(self.context, self.modified)
         info = storage.scale(factory=self.create,
                              fieldname=fieldname,
                              height=height,

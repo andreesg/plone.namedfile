@@ -4,7 +4,8 @@ Changelog
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Disable CSRF protection when creating a scale so we can write to the database
+  [vangheem]
 
 
 2.0.2 (2013-05-23)
