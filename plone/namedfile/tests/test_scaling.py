@@ -196,7 +196,9 @@ class ImageTraverseTests(NamedFileTestCase):
         view = self.item.unrestrictedTraverse('@@images')
         stack = path.split('/')
         name = stack.pop(0)
-        tag = view.traverse(name, stack)
+        static_traverser = view.traverse(name, stack)
+        scale = stack.pop(0)
+        tag = static_traverser.traverse(scale, stack)
         base = self.item.absolute_url()
         expected = r'<img src="%s/@@images/([-0-9a-f]{36}).(jpeg|gif|png)" ' \
             r'alt="foo" title="foo" height="(\d+)" width="(\d+)" />' % base
@@ -282,12 +284,14 @@ class ImagePublisherTests(NamedFileFunctionalTestCase):
         scale = self.view.scale('image', width=64, height=64)
         # make sure the referenced image scale is available
         url = scale.url.replace('http://nohost', '')
+        get_response = self.publish(url, basic=self.getCredentials())
         response = self.publish(url,
                                 basic=self.getCredentials(),
                                 request_method='HEAD')
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
-        self.assertEqual(response.getHeader('Content-Length'), '312')
+        self.assertEqual(
+            response.getHeader('Content-Length'), str(len(get_response.getBody())))
         self.assertEqual(response.getBody(), '')
 
     def testPublishThumbViaUID(self):

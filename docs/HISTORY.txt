@@ -1,11 +1,19 @@
 Changelog
 =========
 
-2.0.3 (unreleased)
+2.0.4 (unreleased)
 ------------------
 
 - Disable CSRF protection when creating a scale so we can write to the database
   [vangheem]
+
+
+2.0.3 (2013-12-07)
+------------------
+
+- Scaling Traverser now does not try to traverse two steps in one.
+  This is impossible in chameleon.
+  [do3cc]
 
 
 2.0.2 (2013-05-23)
