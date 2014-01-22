@@ -7,6 +7,9 @@ Changelog
 - Disable CSRF protection when creating a scale so we can write to the database
   [vangheem]
 
+- Fix: get_contenttype works when empty string is given as contentType.
+  [thomasdesvenain]
+
 
 2.0.3 (2013-12-07)
 ------------------
