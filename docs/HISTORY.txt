@@ -11,6 +11,9 @@ Changelog
   [thomasdesvenain]
 
 - Fix: get_contenttype works when empty string is given as contentType.
+
+- Backward compatibility of NamedFile with zope.app.file FileChunk.
+  Avoids NamedFile validation unexpected failures.
   [thomasdesvenain]
 
 
