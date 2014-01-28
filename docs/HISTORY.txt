@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.4 (unreleased)
+2.0.4 (2014-01-27)
 ------------------
 
 - Disable CSRF protection when creating a scale so we can write to the database
