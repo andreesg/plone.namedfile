@@ -299,7 +299,9 @@ class ImageScaling(BrowserView):
                 return None
             width, height = available[scale]
 
-        alsoProvides(self.request, IDisableCSRFProtection)
+        if self.request is not None:
+            alsoProvides(self.request, IDisableCSRFProtection)
+
         storage = AnnotationStorage(self.context, self.modified)
         info = storage.scale(factory=self.create,
                              fieldname=fieldname,
