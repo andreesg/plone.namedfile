@@ -14,32 +14,41 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-import unittest
-import struct
-import transaction
-
-from zope.component import provideUtility
-from zope.interface.verify import verifyClass
+from plone.namedfile import storages
 from plone.namedfile.file import NamedBlobFile
 from plone.namedfile.file import NamedBlobImage
 from plone.namedfile.interfaces import INamedBlobFile
 from plone.namedfile.interfaces import INamedBlobImage
 from plone.namedfile.interfaces import IStorage
-from plone.namedfile import storages
-from plone.namedfile.tests.base import NamedFileLayer
+from plone.namedfile.testing import NAMEDFILE_INTEGRATION_TESTING
 from plone.namedfile.tests.test_image import zptlogo
+from zope.component import provideUtility
+from zope.interface.verify import verifyClass
+
+import struct
+import transaction
+import unittest2 as unittest
 
 
 def registerUtilities():
-     provideUtility(storages.StringStorable(), IStorage, name="__builtin__.str")
-     provideUtility(storages.UnicodeStorable(), IStorage, name="__builtin__.unicode")
-     provideUtility(storages.FileChunkStorable(), IStorage, name="plone.namedfile.file.FileChunk")
-     provideUtility(storages.FileDescriptorStorable(), IStorage, name="__builtin__.file")
+    provideUtility(storages.StringStorable(), IStorage, name="__builtin__.str")
+    provideUtility(
+        storages.UnicodeStorable(),
+        IStorage,
+        name="__builtin__.unicode")
+    provideUtility(
+        storages.FileChunkStorable(),
+        IStorage,
+        name="plone.namedfile.file.FileChunk")
+    provideUtility(
+        storages.FileDescriptorStorable(),
+        IStorage,
+        name="__builtin__.file")
 
 
 class TestImage(unittest.TestCase):
 
-    layer = NamedFileLayer
+    layer = NAMEDFILE_INTEGRATION_TESTING
 
     def setUp(self):
         registerUtilities()
@@ -74,7 +83,7 @@ class TestImage(unittest.TestCase):
         self.failUnless(INamedBlobFile.implementedBy(NamedBlobImage))
         self.failUnless(INamedBlobImage.implementedBy(NamedBlobImage))
         self.failUnless(verifyClass(INamedBlobFile, NamedBlobImage))
-    
+
     def testDataMutatorWithLargeHeader(self):
         from plone.namedfile.file import IMAGE_INFO_BYTES
         bogus_header_length = struct.pack('>H', IMAGE_INFO_BYTES * 2)
@@ -98,4 +107,3 @@ class TestImage(unittest.TestCase):
 
         image_copy = copy(image)
         self.assertEqual(image_copy.data, image.data)
-    

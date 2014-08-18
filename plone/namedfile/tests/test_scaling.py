@@ -1,15 +1,18 @@
 from DateTime import DateTime
 from OFS.SimpleItem import SimpleItem
-from plone.namedfile.interfaces import IImageScaleTraversable, IAvailableSizes
 from plone.namedfile.field import NamedImage as NamedImageField
 from plone.namedfile.file import NamedImage
-from plone.namedfile.tests.base import NamedFileTestCase, getFile
-from plone.namedfile.tests.base import NamedFileFunctionalTestCase
+from plone.namedfile.interfaces import IAvailableSizes
+from plone.namedfile.interfaces import IImageScaleTraversable
 from plone.namedfile.scaling import ImageScaling
+from plone.namedfile.testing import getFile
+from plone.namedfile.tests.base import NamedFileFunctionalTestCase
+from plone.namedfile.tests.base import NamedFileTestCase
 from plone.scale.interfaces import IScaledImageQuality
 from zExceptions import Unauthorized
 from zope.annotation import IAttributeAnnotatable
-from zope.component import getSiteManager, getGlobalSiteManager
+from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
 from zope.interface import implements
 
 
@@ -32,6 +35,7 @@ class DummyContent(SimpleItem):
 
 
 class DummyQualitySupplier(object):
+
     """ fake utility for plone.app.imaging's scaling quality """
     implements(IScaledImageQuality)
 
@@ -291,7 +295,9 @@ class ImagePublisherTests(NamedFileFunctionalTestCase):
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
         self.assertEqual(
-            response.getHeader('Content-Length'), str(len(get_response.getBody())))
+            response.getHeader('Content-Length'),
+            str(len(get_response.getBody()))
+        )
         self.assertEqual(response.getBody(), '')
 
     def testPublishThumbViaUID(self):
@@ -356,8 +362,3 @@ class ImagePublisherTests(NamedFileFunctionalTestCase):
         response = self.publish('/item/@@images/image/foo', basic=credentials)
         self.assertEqual(response.getStatus(), 401)
         self.item.__allow_access_to_unprotected_subobjects__ = 1
-
-
-def test_suite():
-    from unittest import defaultTestLoader
-    return defaultTestLoader.loadTestsFromName(__name__)

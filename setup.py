@@ -38,6 +38,13 @@ setup(name='plone.namedfile',
         'supermodel': ['plone.supermodel'],
         'marshaler': [], # for BBB, we now depend on this
         'scales': ['plone.scale[storage] >=1.1dev'],
-        'test': ['lxml', 'plone.scale'],
+        'test': [
+            'Pillow',
+            'lxml',
+            'plone.app.testing',
+            'plone.scale',
+            'plone.testing',
+            'unittest2'
+        ],
       },
       )

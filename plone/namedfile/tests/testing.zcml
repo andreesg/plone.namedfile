@@ -8,7 +8,7 @@
     <include package="zope.traversing" file="configure.zcml" />
     
     <permission id="zope2.View" title="View" />
-    
-    <include package="plone.namedfile" />
-    
+
+    <include package="plone.namedfile" /> 
+
 </configure>
